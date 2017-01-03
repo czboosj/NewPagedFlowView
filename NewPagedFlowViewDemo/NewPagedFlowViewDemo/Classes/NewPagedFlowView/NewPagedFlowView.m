@@ -516,10 +516,22 @@
     
     switch (self.orientation) {
         case NewPagedFlowViewOrientationHorizontal:
-            pageIndex = (int)floor(_scrollView.contentOffset.x / _pageSize.width) % self.orginPageCount;
+            pageIndex = (int)floor(_scrollView.contentOffset.x / _pageSize.width);
+            //% self.orginPageCount;
+            double margin = _scrollView.contentOffset.x - (pageIndex * _pageSize.width);
+            if (margin>(_pageSize.width/2)){
+                pageIndex = pageIndex+1;
+            }
+            pageIndex = pageIndex % self.orginPageCount;
             break;
         case NewPagedFlowViewOrientationVertical:
-            pageIndex = (int)floor(_scrollView.contentOffset.y / _pageSize.height) % self.orginPageCount;
+            pageIndex = (int)floor(_scrollView.contentOffset.y / _pageSize.height);
+            //% self.orginPageCount;
+            double margin2 = _scrollView.contentOffset.x - (pageIndex * _pageSize.width);
+            if (margin2>(_pageSize.width/2)){
+                pageIndex = pageIndex+1;
+            }
+            pageIndex = pageIndex % self.orginPageCount;
             break;
         default:
             break;
