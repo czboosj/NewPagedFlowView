@@ -133,7 +133,7 @@
 
 - (void)didScrollToPage:(NSInteger)pageNumber inFlowView:(NewPagedFlowView *)flowView {
     
-    NSLog(@"ViewController 滚动到了第%ld页",pageNumber);
+    NSLog(@"ViewController 滚动到了第%ld页",(long)pageNumber);
 }
 
 #pragma mark --懒加载

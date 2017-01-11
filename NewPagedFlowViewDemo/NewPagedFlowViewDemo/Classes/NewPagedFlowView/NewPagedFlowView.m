@@ -198,7 +198,8 @@
     UIView *cell = [_cells objectAtIndex:pageIndex];
     
     if ((NSObject *)cell == [NSNull null]) {
-        cell = [_dataSource flowView:self cellForPageAtIndex:pageIndex % self.orginPageCount];
+        __weak __typeof__(self) weakself = self;
+        cell = [_dataSource flowView:weakself cellForPageAtIndex:pageIndex % self.orginPageCount];
         NSAssert(cell!=nil, @"datasource must not return nil");
         [_cells replaceObjectAtIndex:pageIndex withObject:cell];
         
@@ -367,12 +368,12 @@
         
         //重置pageCount
         if (_dataSource && [_dataSource respondsToSelector:@selector(numberOfPagesInFlowView:)]) {
-            
+            __weak __typeof__(self) weakself = self;
             //原始页数
-            self.orginPageCount = [_dataSource numberOfPagesInFlowView:self];
+            self.orginPageCount = [_dataSource numberOfPagesInFlowView:weakself];
             
             //总页数
-            _pageCount = self.orginPageCount == 1 ? 1: [_dataSource numberOfPagesInFlowView:self] * 3;
+            _pageCount = self.orginPageCount == 1 ? 1: [_dataSource numberOfPagesInFlowView:weakself] * 3;
             
             //如果总页数为0，return
             if (_pageCount == 0) {
@@ -387,7 +388,8 @@
         
         //重置pageWidth
         if (_delegate && [_delegate respondsToSelector:@selector(sizeForPageInFlowView:)]) {
-            _pageSize = [_delegate sizeForPageInFlowView:self];
+            __weak __typeof__(self) weakself = self;
+            _pageSize = [_delegate sizeForPageInFlowView:weakself];
         }
         
         [_reusableCells removeAllObjects];
@@ -501,8 +503,10 @@
     
     return nil;
 }
-
-
+- (void)dealloc
+{
+    [self stopTimer];
+}
 #pragma mark -
 #pragma mark UIScrollView Delegate
 
@@ -596,7 +600,8 @@
     }
     
     if ([_delegate respondsToSelector:@selector(didScrollToPage:inFlowView:)] && _currentPageIndex != pageIndex) {
-        [_delegate didScrollToPage:pageIndex inFlowView:self];
+        __weak __typeof__(self) weakself = self;
+        [_delegate didScrollToPage:pageIndex inFlowView:weakself];
     }
     
     _currentPageIndex = pageIndex;

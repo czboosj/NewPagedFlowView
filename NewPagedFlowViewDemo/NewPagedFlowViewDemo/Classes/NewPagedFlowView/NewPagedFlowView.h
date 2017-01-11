@@ -58,8 +58,8 @@ typedef enum{
  */
 @property (nonatomic,strong) NSMutableArray *reusableCells;
 
-@property (nonatomic,assign)   id <NewPagedFlowViewDataSource> dataSource;
-@property (nonatomic,assign)   id <NewPagedFlowViewDelegate>   delegate;
+@property (nonatomic,weak)   id <NewPagedFlowViewDataSource> dataSource;
+@property (nonatomic,weak)   id <NewPagedFlowViewDelegate>   delegate;
 
 /**
  *  指示器
